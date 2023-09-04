@@ -67,6 +67,7 @@ pipeline {
                 subject: "Pipeline Status: FAILURE",
                 body: "The Jenkins pipeline has failed. Please check the logs.",
                 to: "luvghodasara000@gmail.com"
+                )
         }
     }
 }
