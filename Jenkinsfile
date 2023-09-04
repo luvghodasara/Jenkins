@@ -1,67 +1,53 @@
 pipeline {
     agent any
 
+    environment {
+        DIRECTORY_PATH = "/path/to/code"
+        TESTING_ENVIRONMENT = "test-env"
+        PRODUCTION_ENVIRONMENT = "production-env"
+    }
+
     stages {
         stage('Build') {
             steps {
-                // Use your chosen build automation tool (e.g., Maven)
-                // Example: sh 'mvn clean package'
+                echo "Fetching the source code from the directory path: ${env.DIRECTORY_PATH}"
+                echo "Compiling the code and generating necessary artifacts"
             }
         }
-        stage('Unit and Integration Tests') {
+        stage('Test') {
             steps {
-                // Use your chosen test automation tools
-                // Example: sh 'npm test'
+                echo "Running unit tests"
+                echo "Running integration tests"
             }
         }
-        stage('Code Analysis') {
+        stage('Code Quality Check') {
             steps {
-                // Integrate a code analysis tool
-                // Example: sh 'sonar-scanner'
+                echo "Checking the quality of the code"
             }
         }
-        stage('Security Scan') {
+        stage('Deploy') {
             steps {
-                // Integrate a security scanning tool
-                // Example: sh 'snyk test'
+                echo "Deploying the application to testing environment: ${env.TESTING_ENVIRONMENT}"
             }
         }
-        stage('Deploy to Staging') {
+        stage('Approval') {
             steps {
-                // Deploy the application to a staging server
-                // Example: sh 'deploy-to-staging.sh'
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                // Run integration tests on the staging environment
-                // Example: sh 'run-integration-tests.sh'
+                script {
+                    echo "Waiting for manual approval..."
+                    sleep(time: 10, unit: 'SECONDS')
+                }
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production server
-                // Example: sh 'deploy-to-production.sh'
+                echo "Deploying the code to production environment: ${env.PRODUCTION_ENVIRONMENT}"
             }
         }
     }
 
     post {
-        success {
-            // Send notification email for successful pipeline
-            emailext (
-                subject: "Pipeline Status: SUCCESS",
-                body: "The Jenkins pipeline has completed successfully.",
-                to: "your-email@example.com"
-            )
-        }
-        failure {
-            // Send notification email for failed pipeline
-            emailext (
-                subject: "Pipeline Status: FAILURE",
-                body: "The Jenkins pipeline has failed. Please check the logs.",
-                to: "your-email@example.com"
-            )
+        always {
+            echo "Pipeline execution completed"
         }
     }
 }
