@@ -39,7 +39,7 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment")
+                    echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
                 }
             }
         }
