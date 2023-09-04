@@ -1,70 +1,51 @@
 pipeline {
     agent any
 
+    environment {
+        DIRECTORY_PATH = "/path/to/code"
+        TESTING_ENVIRONMENT = "test-env"
+        PRODUCTION_ENVIRONMENT = "production-env"
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code...'
-                // Use Maven to build your code
-            //    sh 'mvn clean package'
+                echo "Fetching the source code from the directory path: ${env.DIRECTORY_PATH} using maven"
+                echo "Compiling the code and generating necessary artifacts"
             }
         }
-
-        stage('Unit and Integration Tests') {
+        stage('Unit and Integration Test') {
             steps {
-                echo 'Running unit tests...'
-                // Run unit tests with JUnit
-              //  sh 'mvn test'
-
-                echo 'Running integration tests...'
-                // Run integration tests with Selenium
-                // You need to have Selenium WebDriver configured
-             //   sh 'mvn integration-test'
+                echo "Running unit tests"
+                sleep(time: 10, unit: 'SECONDS')
+                echo "Running integration tests"
             }
         }
-
         stage('Code Analysis') {
             steps {
-                echo 'Performing code analysis...'
-                // Use SonarQube for code analysis
-                // Assumes SonarQube Scanner is configured
-             //   withSonarQubeEnv('SonarQubeServer') {
-                //    sh 'mvn sonar:sonar'
+                echo "Integrating a code analysis tool to analyse the code and ensuring that it meets industry standards using SonarQube"
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo "Perform a security scan on the code using a tool to identify any vulnerabilitie using OWASP ZAP"
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo " Deploying the application to a staging server in AWS Elastic Beanstalk"
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                script {
+                    echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment")
                 }
             }
         }
-
-        stage('Security Scan') {
-            steps {
-                echo 'Performing security scan...'
-                // Use OWASP ZAP for security scanning
-              //  sh 'zap-baseline.py -t http://your-app-url'
-            }
-        }
-
-        stage('Deploy to Staging') {
-            steps {
-                echo 'Deploying to staging environment...'
-                // Deploy to AWS Elastic Beanstalk
-                // Assumes Elastic Beanstalk environment is configured
-               // sh 'eb deploy your-staging-environment'
-            }
-        }
-
-        stage('Integration Tests on Staging') {
-            steps {
-                echo 'Running integration tests on staging...'
-                // Run integration tests on the staging environment with Postman
-                // Assumes Postman collection and environment are configured
-               // sh 'newman run your-postman-collection.json --environment your-postman-environment.json'
-            }
-        }
-
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production environment...'
-                // Deploy to AWS Elastic Beanstalk (Production Environment)
-               // sh 'eb deploy your-production-environment'
+                echo "Deploying the code to production environment: ${env.PRODUCTION_ENVIRONMENT}"
             }
         }
     }
@@ -72,6 +53,6 @@ pipeline {
     post {
         always {
             echo "Pipeline execution completed"
-        
+        }
     }
 }
