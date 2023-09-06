@@ -42,6 +42,17 @@ pipeline {
                     echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
                 }
             }
+            post {
+               success {
+            // Send notification email for successful pipeline
+            emailext (
+                subject: "Pipeline Status: SUCCESS",
+                body: "The Jenkins pipeline has completed successfully.",
+                to: "luvghodasara000@gmail.com"
+            )
+        } 
+            }
+                
         }
         stage('Deploy to Production') {
             steps {
@@ -49,26 +60,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            echo "Pipeline execution completed"
-            success {
-            // Send notification email for successful pipeline
-            emailext (
-                subject: "Pipeline Status: SUCCESS",
-                body: "The Jenkins pipeline has completed successfully.",
-                to: "luvghodasara000@gmail.com"
-            )
-        }
-        failure {
-            // Send notification email for failed pipeline
-            emailext (
-                subject: "Pipeline Status: FAILURE",
-                body: "The Jenkins pipeline has failed. Please check the logs.",
-                to: "luvghodasara000@gmail.com"
-                )
-        }
-    }
-}
 }
