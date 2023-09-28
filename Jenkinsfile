@@ -49,6 +49,7 @@ pipeline {
                 subject: "Pipeline Status: SUCCESS",
                 body: "The Jenkins pipeline has completed successfully.",
                 to: "luvghodasara000@gmail.com",
+                mimeType: 'text/html',
                 attachmentsPattern: '**/*.log'
             )
         } 
