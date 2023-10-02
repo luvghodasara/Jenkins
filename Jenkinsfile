@@ -49,8 +49,7 @@ pipeline {
                 subject: "Pipeline Status: SUCCESS",
                 to: "luvghodasara000@gmail.com",
                 mimeType: 'text/html',
-                msgBody: "${Jenkins.instance.rootUrl}/${env.BUILD_URL}consoleText",
-                body: "${SCRIPT, template=\"email_body.txt\"}",
+                body: '''${SCRIPT, template="groovy-html.template"}''',
                 attachLog: true
             )
         } 
