@@ -54,27 +54,16 @@ pipeline {
             }
             post {
                 success {
-                    // Send notification email for successful pipeline with log file attachment
+                    // Archive the custom message file as an artifact
+                    archiveArtifacts artifacts: 'custom_message.txt', allowEmptyArchive: true
+
+                    // Send notification email for successful pipeline
                     emailext (
                         subject: "Pipeline Status: SUCCESS",
                         body: "The Jenkins pipeline has completed successfully.",
                         to: "luvghodasara000@gmail.com",
-                        mimeType: 'text/html',
-                        attachmentsPattern: '**/*.log' // Attach all log files in workspace
+                        mimeType: 'text/html'
                     )
-
-                    // Attach the custom message file
-                    script {
-                        if (fileExists('custom_message.txt')) {
-                            emailext (
-                                subject: "Custom Message",
-                                body: "See attached custom message",
-                                to: "luvghodasara000@gmail.com",
-                                mimeType: 'text/html',
-                                attachments: [[$class: 'FilePath', path: 'custom_message.txt']]
-                            )
-                        }
-                    }
                 }
             }
         }
