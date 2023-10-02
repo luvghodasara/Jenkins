@@ -44,18 +44,20 @@ pipeline {
             }
             post {
                success {
-            // Send notification email for successful pipeline
-            emailext (
-                subject: "Pipeline Status: SUCCESS",
-                to: "luvghodasara000@gmail.com",
-                mimeType: 'text/html',
-                attachLog: true
-            )
-                mail to: "luvghodasara000@gmail.com",
-                      subject: "Custom Message",
-                      body: "See attached custom message",
-                      attachmentsPattern: 'custom_message.txt'
-        } 
+                    // Send notification email for successful pipeline with log file attachment
+                    emailext (
+                        subject: "Pipeline Status: SUCCESS",
+                        body: "The Jenkins pipeline has completed successfully.",
+                        to: "luvghodasara000@gmail.com",
+                        mimeType: 'text/html',
+                        attachmentsPattern: '**/*.log' // Attach all log files in workspace
+                    )
+                    // Use the 'mail' step to attach the custom message file
+                    mail to: "luvghodasara000@gmail.com",
+                        subject: "Custom Message",
+                        body: "See attached custom message",
+                        attachments: 'custom_message.txt' // Attach the custom message file
+                } 
             }
                 
         }
