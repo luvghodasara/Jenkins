@@ -49,7 +49,7 @@ pipeline {
                 subject: "Pipeline Status: SUCCESS",
                 to: "luvghodasara000@gmail.com",
                 mimeType: 'text/html',
-                body: '''${SCRIPT, template="groovy-html.template"}''',
+                attachments: 'custom_message.txt',
                 attachLog: true
             )
         } 
