@@ -48,9 +48,7 @@ pipeline {
             steps {
                 script {
                     echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
-                    // Create a custom message file
-                    writeFile file: 'custom_message.txt', text: 'The Jenkins pipeline has completed successfully.'
-                }
+                 }
             }
             post {
                 success {
@@ -60,19 +58,8 @@ pipeline {
                         body: "The Jenkins pipeline has completed successfully.",
                         to: "luvghodasara000@gmail.com",
                         mimeType: 'text/html',
-                        attachmentsPattern: '**/*.log' // Attach all log files in workspace
+                        attachmentsPattern: '**/report.html' 
                     )
-
-                    // Send a separate email with the custom message file attachment
-                    script {
-                        emailext (
-                            subject: "Custom Message",
-                            body: "See attached custom message",
-                            to: "luvghodasara000@gmail.com",
-                            mimeType: 'text/html',
-                            attachments: [[$class: 'FilePath', path: 'custom_message.txt']]
-                        )
-                    }
                 }
             }
         }
@@ -80,7 +67,6 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo "Deploying the code to production environment: ${env.PRODUCTION_ENVIRONMENT}"
-                // Add deployment to production step here
             }
         }
     }
