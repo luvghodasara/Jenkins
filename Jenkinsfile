@@ -49,7 +49,6 @@ pipeline {
                 subject: "Pipeline Status: SUCCESS",
                 to: "luvghodasara000@gmail.com",
                 mimeType: 'text/html',
-                attachments: 'custom_message.txt',
                 attachLog: true
             )
                 mail to: "luvghodasara000@gmail.com",
