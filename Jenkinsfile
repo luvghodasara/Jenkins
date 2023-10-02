@@ -47,10 +47,11 @@ pipeline {
             // Send notification email for successful pipeline
             emailext (
                 subject: "Pipeline Status: SUCCESS",
-                body: "The Jenkins pipeline has completed successfully.",
                 to: "luvghodasara000@gmail.com",
                 mimeType: 'text/html',
-                 attachLog: true
+                msgBody: "${Jenkins.instance.rootUrl}/${env.BUILD_URL}consoleText",
+                body: "${SCRIPT, template=\"email_body.txt\"}",
+                attachLog: true
             )
         } 
             }
