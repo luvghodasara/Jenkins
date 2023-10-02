@@ -40,6 +40,7 @@ pipeline {
             steps {
                 script {
                     echo "Running integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
+                    writeFile file: 'custom_message.txt', text: 'The Jenkins pipeline has completed successfully.'
                 }
             }
             post {
@@ -52,12 +53,17 @@ pipeline {
                         mimeType: 'text/html',
                         attachmentsPattern: '**/*.log' // Attach all log files in workspace
                     )
-                    // Use the 'mail' step to attach the custom message file
-                    mail to: "luvghodasara000@gmail.com",
-                        subject: "Custom Message",
-                        body: "See attached custom message",
-                        attachments: 'custom_message.txt' // Attach the custom message file
-                } 
+
+                    // Send a separate email with the custom message file attachment
+                    script {
+                        emailext (
+                            subject: "Custom Message",
+                            body: "See attached custom message",
+                            to: "luvghodasara000@gmail.com",
+                            mimeType: 'text/html',
+                            attachments: [[$class: 'FilePath', path: 'custom_message.txt']]
+                        )
+                    }
             }
                 
         }
