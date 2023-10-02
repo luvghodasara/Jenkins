@@ -52,6 +52,10 @@ pipeline {
                 attachments: 'custom_message.txt',
                 attachLog: true
             )
+                mail to: "luvghodasara000@gmail.com",
+                      subject: "Custom Message",
+                      body: "See attached custom message",
+                      attachmentsPattern: 'custom_message.txt'
         } 
             }
                 
